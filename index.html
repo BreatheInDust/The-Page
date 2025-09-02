@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f2f5;
+    }
+    .container {
+      text-align: center;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      background-color: #4285F4;
+      color: white;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <h2>Sign in with Google</h2>
+    <button id="googleSignIn">Sign In / Sign Up</button>
+  </div>
+
+  <!-- Use ES modules directly in browser -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyA_rYmHPf515qPrqiJ38C9cEvvMLMikaV4",
+      authDomain: "carpetmanpage.firebaseapp.com",
+      projectId: "carpetmanpage",
+      storageBucket: "carpetmanpage.firebasestorage.app",
+      messagingSenderId: "254203633834",
+      appId: "1:254203633834:web:a76482450302d6b46830d3",
+      measurementId: "G-6SDY4HBXG2"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    document.getElementById('googleSignIn').addEventListener('click', async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        document.getElementById('container').innerHTML = `
+          <h2>Thanks for signing up. What now?</h2>
+          <p>Welcome, ${result.user.displayName}!</p>
+        `;
+      } catch (error) {
+        console.error(error);
+        alert("Sign in failed. Check console.");
+      }
+    });
+  </script>
+</body>
+</html>
